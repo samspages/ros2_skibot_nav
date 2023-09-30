@@ -1,0 +1,30 @@
+[0.589s] Invoking command in '/home/student/dev_ws/src/skibot/skibot_nav/build/skibot_nav': PYTHONPATH=/home/student/dev_ws/src/skibot/skibot_nav/build/skibot_nav/prefix_override:/home/student/dev_ws/src/skibot/skibot_nav/install/skibot_nav/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --editable --build-directory /home/student/dev_ws/src/skibot/skibot_nav/build/skibot_nav/build --no-deps install_data
+[0.799s] running develop
+[0.799s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+[0.799s]   warnings.warn(
+[0.799s] /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[0.799s]   warnings.warn(
+[0.856s] /usr/lib/python3/dist-packages/pkg_resources/__init__.py:116: PkgResourcesDeprecationWarning: 1.1build1 is an invalid version and will not be supported in a future release
+[0.856s]   warnings.warn(
+[0.962s] running egg_info
+[0.962s] creating skibot_nav.egg-info
+[0.963s] writing skibot_nav.egg-info/PKG-INFO
+[0.963s] writing dependency_links to skibot_nav.egg-info/dependency_links.txt
+[0.963s] writing entry points to skibot_nav.egg-info/entry_points.txt
+[0.963s] writing requirements to skibot_nav.egg-info/requires.txt
+[0.963s] writing top-level names to skibot_nav.egg-info/top_level.txt
+[0.964s] writing manifest file 'skibot_nav.egg-info/SOURCES.txt'
+[0.965s] reading manifest file 'skibot_nav.egg-info/SOURCES.txt'
+[0.966s] writing manifest file 'skibot_nav.egg-info/SOURCES.txt'
+[0.987s] running build_ext
+[0.987s] Creating /home/student/dev_ws/src/skibot/skibot_nav/install/skibot_nav/lib/python3.10/site-packages/skibot-nav.egg-link (link to .)
+[0.987s] Installing skibot_nav_node script to /home/student/dev_ws/src/skibot/skibot_nav/install/skibot_nav/lib/skibot_nav
+[0.988s] 
+[0.988s] Installed /home/student/dev_ws/src/skibot/skibot_nav/build/skibot_nav
+[0.988s] running install_data
+[0.988s] creating /home/student/dev_ws/src/skibot/skibot_nav/install/skibot_nav/share/ament_index
+[0.988s] creating /home/student/dev_ws/src/skibot/skibot_nav/install/skibot_nav/share/ament_index/resource_index
+[0.988s] creating /home/student/dev_ws/src/skibot/skibot_nav/install/skibot_nav/share/ament_index/resource_index/packages
+[0.988s] copying resource/skibot_nav -> /home/student/dev_ws/src/skibot/skibot_nav/install/skibot_nav/share/ament_index/resource_index/packages
+[0.988s] copying package.xml -> /home/student/dev_ws/src/skibot/skibot_nav/install/skibot_nav/share/skibot_nav
+[1.009s] Invoked command in '/home/student/dev_ws/src/skibot/skibot_nav/build/skibot_nav' returned '0': PYTHONPATH=/home/student/dev_ws/src/skibot/skibot_nav/build/skibot_nav/prefix_override:/home/student/dev_ws/src/skibot/skibot_nav/install/skibot_nav/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --editable --build-directory /home/student/dev_ws/src/skibot/skibot_nav/build/skibot_nav/build --no-deps install_data

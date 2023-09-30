@@ -1,0 +1,9 @@
+source;share/skibot_nav/hook/pythonpath.ps1
+source;share/skibot_nav/hook/pythonpath.dsv
+source;share/skibot_nav/hook/pythonpath.sh
+source;share/skibot_nav/hook/ament_prefix_path.ps1
+source;share/skibot_nav/hook/ament_prefix_path.dsv
+source;share/skibot_nav/hook/ament_prefix_path.sh
+source;../../build/skibot_nav/share/skibot_nav/hook/pythonpath_develop.ps1
+source;../../build/skibot_nav/share/skibot_nav/hook/pythonpath_develop.dsv
+source;../../build/skibot_nav/share/skibot_nav/hook/pythonpath_develop.sh

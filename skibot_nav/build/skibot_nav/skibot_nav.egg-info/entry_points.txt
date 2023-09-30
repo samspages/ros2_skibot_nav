@@ -1,0 +1,3 @@
+[console_scripts]
+skibot_nav_node = skibot_nav.skibot_nav_node:main
+

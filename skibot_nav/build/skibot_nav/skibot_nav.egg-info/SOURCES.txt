@@ -1,0 +1,13 @@
+package.xml
+setup.cfg
+setup.py
+resource/skibot_nav
+skibot_nav/__init__.py
+skibot_nav/skibot_nav_node.py
+skibot_nav.egg-info/PKG-INFO
+skibot_nav.egg-info/SOURCES.txt
+skibot_nav.egg-info/dependency_links.txt
+skibot_nav.egg-info/entry_points.txt
+skibot_nav.egg-info/requires.txt
+skibot_nav.egg-info/top_level.txt
+skibot_nav.egg-info/zip-safe

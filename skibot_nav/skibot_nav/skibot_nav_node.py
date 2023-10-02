@@ -1,64 +1,76 @@
-#!/usr/bin/env python
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Wrench, Point
-import math
-import time
+from rclpy.executors import MultiThreadedExecutor
+from skibot_interfaces.msg import Pose
+from geometry_msgs.msg import Wrench
+import numpy as np
 
 class SkibotNavNode(Node):
+
     def __init__(self):
-        super().__init__('skibot_nav_node')
-        self.velocity_pub = self.create_publisher(Wrench, 'thrust', 10)
-        self.goal_point = Point(x=-5.0, y=2.0)  # Set the goal position here
-        self.rate = self.create_rate(10)  # Adjust the publishing rate as needed
-        self.distance_tolerance = 0.1  # Tolerance for considering the goal reached
+        super().__init__('skibot_nav')
+        self.target_x = 3.0 
+        self.target_y = 4.0
+        self.initial_theta = 0.0  # Matching the robot's initial orientation
+        self.current_theta = self.initial_theta  # To keep track of the robot's current heading
+        print("goal pose: x=" + str(self.target_x) + " y=" + str(self.target_y))
+        self.state = "rotating"
+        self.k_p_rotation = 0.1
+        self.k_p_translation = 0.1
 
-    def move_to_goal(self):
-        while not self.goal_reached():
-            # Calculate the direction vector towards the goal
-            direction_x = self.goal_point.x
-            direction_y = self.goal_point.y
+        self.subscription = self.create_subscription(Pose, 'pose', self.pose_callback, 10)
+        self.publisher_ = self.create_publisher(Wrench, 'thrust', 10)
 
-            # Calculate the distance to the goal
-            distance = math.sqrt(direction_x ** 2 + direction_y ** 2)
+    def pose_callback(self, msg):
+        self.current_theta = msg.theta  # Updating the current heading of the robot
+        
+        error_x = self.target_x - msg.x
+        error_y = self.target_y - msg.y
+        desired_theta = np.arctan2(error_y, error_x)
+        error_theta = (desired_theta - self.current_theta + np.pi) % (2 * np.pi) - np.pi
 
-            # Normalize the direction vector
-            direction_x /= distance
-            direction_y /= distance
+        control_output = Wrench()
+        distance_to_target = np.sqrt(error_x**2 + error_y**2)
 
-            # Calculate the tap force proportional to the distance
-            tap_force = distance * 0.5  # Adjust the factor as needed
+        if self.state == "rotating":
+            print("rotating from theta: " + str(self.current_theta) + " to goal theta: " + str(desired_theta))
+            if abs(error_theta) < 0.1:  # Tolerance to be defined
+                self.state = "translating"
+            else:
+                control_output.torque.z = self.k_p_rotation * error_theta
 
-            wrench = Wrench()
-            wrench.force.x = tap_force * direction_x  # Apply linear force
-            wrench.force.y = tap_force * direction_y  # Apply linear force
+        elif self.state == "translating":
+            print("moving at position x=" + str(msg.x) + " y= " + str(msg.y))
+            if distance_to_target < 0.1:
+                self.state = "stopped"
+            else:
+            # Check if the robot's heading deviates too much from the desired heading
+                if abs(error_theta) > 0.2:  # Example threshold, adjust as needed
+                    self.state = "rotating"
+                else:
+                    control_output.force.x = self.k_p_translation * error_x
+                    control_output.force.y = self.k_p_translation * error_y
+            
+        elif self.state == "stopped":
+            print("goal found")
+            control_output.force.x = 0.0
+            control_output.force.y = 0.0
+            control_output.torque.z = 0.0
 
-            # Publish the wrench message to control the bot
-            self.velocity_pub.publish(wrench)
-            self.rate.sleep()
-
-        # Stop the bot after reaching the goal
-        self.stop_bot()
-
-    def stop_bot(self):
-        # Stop the bot by sending zero velocity
-        zero_wrench = Wrench()
-        self.velocity_pub.publish(zero_wrench)
-
-    def goal_reached(self):
-        # Check if the distance to the goal is within tolerance
-        direction_x = self.goal_point.x
-        direction_y = self.goal_point.y
-        distance = math.sqrt(direction_x ** 2 + direction_y ** 2)
-        return distance <= self.distance_tolerance
+        self.publisher_.publish(control_output)
 
 def main(args=None):
     rclpy.init(args=args)
     skibot_nav_node = SkibotNavNode()
-    skibot_nav_node.move_to_goal()
-    rclpy.spin(skibot_nav_node)
-    skibot_nav_node.destroy_node()
-    rclpy.shutdown()
+    executor = MultiThreadedExecutor()
+    executor.add_node(skibot_nav_node)
+    
+    try:
+        executor.spin()
+    finally:
+        executor.shutdown()
+        skibot_nav_node.destroy_node()
+        rclpy.shutdown()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
